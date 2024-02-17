@@ -29,15 +29,16 @@ const start = async () => {
 
   app.use(
     "/api/trpc",
-    // @ts-expect-error context already passed from express middleware
-    trpcExpress.createExpressMiddleware({ router: appRouter, createContext})
+    trpcExpress.createExpressMiddleware({ router: appRouter, createContext: createContext() })
   );
 
   app.use((req, res) => nextHandler(req, res));
   nextApp.prepare().then(() => {
-       payload.logger.info("Next.js Started")
+    payload.logger.info("Next.js Started");
     app.listen(PORT, async () => {
-      payload.logger.info(`Nextjs App URL:${process.env.NEXT_PUBLIC_SERVER_URL}`)
+      payload.logger.info(
+        `Nextjs App URL:${process.env.NEXT_PUBLIC_SERVER_URL}`
+      );
     });
   });
 };
