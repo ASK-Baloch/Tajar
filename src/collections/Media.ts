@@ -1,18 +1,19 @@
 import { User } from "../payload-types";
 import { Access, CollectionConfig } from "payload/types";
 
-const isAdminOrHasAccessToImages = () : Access => async ({req}) => {
-        const user = req.user as User | undefined ;
-        if(!user) return false;
-        if(user.role === "admin") return true;
+const isAdminOrHasAccessToImages =
+  (): Access =>
+  async ({ req }) => {
+    const user = req.user as User | undefined;
+    if (!user) return false;
+    if (user.role === "admin") return true;
 
-        return{
-            user:{
-                equals:req.user.id,
-            }
-        }
-    }
-
+    return {
+      user: {
+        equals: req.user.id,
+      },
+    };
+  };
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -23,19 +24,19 @@ export const Media: CollectionConfig = {
       },
     ],
   },
-  access:{
-    read: async ({req}) => {
-        const referrer = req.headers.referer;
-        if(!req.user || !referrer?.includes('sell')){
-            return true
-        }
-        return await isAdminOrHasAccessToImages()({req})
+  access: {
+    read: async ({ req }) => {
+      const referrer = req.headers.referer;
+      if (!req.user || !referrer?.includes("sell")) {
+        return true;
+      }
+      return await isAdminOrHasAccessToImages()({ req });
     },
-    delete:isAdminOrHasAccessToImages(),
-    update:isAdminOrHasAccessToImages(),
+    delete: isAdminOrHasAccessToImages(),
+    update: isAdminOrHasAccessToImages(),
   },
-  admin:{
-    hidden:({user}) => user.role !== "admin"
+  admin: {
+    hidden: ({ user }) => user.role !== "admin",
   },
   upload: {
     staticURL: "/media",

@@ -104,17 +104,17 @@ export const Products: CollectionConfig = {
         { label: "Denied", value: "denied" },
       ],
     },
-    //NOTRELATABLE . will change later.....
-    // {
-    //   name: "product_files",
-    //   label: "Product File(s)",
-    //   type: "relationship",
-    //   required: true,
-    //   relationTo: "product_files",
-    //   hasMany: false,
-    // },
+    //                      NOTRELATABLE . will change later.....
+    {
+      name: "product_files",
+      label: "Product File(s)",
+      type: "relationship",
+      required: true,
+      relationTo: "product_files",
+      hasMany: false,
+    },
 
-    //NOTRELATABLE . stripe payment excetera... will use pakistani methods later on
+    //                     NOTRELATABLE . stripe payment excetera... will use pakistani methods later on
     {
       name: "priceId",
       access: {
