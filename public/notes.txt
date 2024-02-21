@@ -1,0 +1,1 @@
+complex similarity search in down recommendation when user opens one product idk what it meant[as far as generating vectors and indexing each product on its semantic meaning ]

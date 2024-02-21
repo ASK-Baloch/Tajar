@@ -1,3 +1,6 @@
+// "use client"
+
+import ImageSlider from "@/components/ImageSlider";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { PRODUCT_CATEGORIES } from "@/config";
 import { getPayloadClient } from "@/get-playload";
@@ -5,6 +8,9 @@ import { formatPrice } from "@/lib/utils";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Shield } from "lucide-react";
+import ProductReel from "@/components/ProductReel";
+import AddToCartButton from "@/components/AddToCartButton";
 
 interface PageProps {
   params: {
@@ -55,6 +61,10 @@ const page = async ({ params }: PageProps) => {
   const label = PRODUCT_CATEGORIES.find(
     ({ value }) => value === product.category
   )?.label;
+
+  const validUrls = product.images
+    .map(({ image }) => (typeof image === "string" ? image : image.url))
+    .filter(Boolean) as string[];
 
   return (
     <MaxWidthWrapper className="bg-white">
@@ -116,8 +126,39 @@ const page = async ({ params }: PageProps) => {
               </div>
             </section>
           </div>
+          {/* PRODUCT IMAGES */}
+          <div className="mt-10 lg:col-start-2 lg:row-start-2 last:mt-0 lg:self-center">
+            <div className=" aspect-square rounded-lg">
+              <ImageSlider urls={validUrls} />
+            </div>
+          </div>
+          {/* ADD TO CART PART */}
+          <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
+            <div>
+              <div className="mt-10">
+                <AddToCartButton />
+              </div>
+              <div className="mt-6 text-center">
+                <div className="group inline-flex text-sm text-medium">
+                  <Shield
+                    aria-hidden="true"
+                    className=" mr-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                  />
+                  <span className="text-muted-foreground hover:text-gray-700">
+                    3 Day Return Gurantee
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <ProductReel
+        href="/products"
+        query={{ category: product.category, limit: 4 }}
+        title={`Similar ${label}`}
+        subtitle={`Browse similar high-quality ${label} just like '${product.name}'`}
+      />
     </MaxWidthWrapper>
   );
 };
