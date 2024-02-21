@@ -1,7 +1,7 @@
 export const PRODUCT_CATEGORIES = [
   {
     label: "Wallet",
-    value: "icons",
+    value: "wallet_kits" as const,
     featured: [
       {
         name: "Leather Wallets",
@@ -22,7 +22,7 @@ export const PRODUCT_CATEGORIES = [
   },
   {
     label: "Hats & Caps",
-    value: "icons",
+    value: "hats" as const,
     featured: [
       {
         name: "simple & Classic High Quality",

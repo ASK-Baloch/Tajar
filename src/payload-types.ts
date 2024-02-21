@@ -13,8 +13,8 @@ export interface Config {
     media: Media;
     product_files: ProductFile;
     orders: Order;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   globals: {};
 }
@@ -24,7 +24,7 @@ export interface Config {
  */
 export interface User {
   id: string;
-  role: "admin" | "user";
+  role: 'admin' | 'user';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -46,16 +46,14 @@ export interface Product {
   id: string;
   user?: (string | null) | User;
   name: string;
-  description: {
-    [k: string]: unknown;
-  }[];
+  description?: string | null;
   price: number;
-  category: "icons";
+  category: 'wallet_kits' | 'hats';
   images: {
     image: string | Media;
     id?: string | null;
   }[];
-  approvedForSale?: ("pending" | "approved" | "denied") | null;
+  approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   product_files: string | ProductFile;
   priceId?: string | null;
   stripeId?: string | null;
@@ -139,7 +137,7 @@ export interface Order {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: string | User;
   };
   key?: string | null;
@@ -167,6 +165,7 @@ export interface PayloadMigration {
   createdAt: string;
 }
 
-declare module "payload" {
+
+declare module 'payload' {
   export interface GeneratedTypes extends Config {}
 }
