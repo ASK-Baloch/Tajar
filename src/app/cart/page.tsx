@@ -1,5 +1,6 @@
 "use client";
 
+import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -36,17 +37,48 @@ const Page = () => {
                   <Image
                     src="/tajar-pics/empty-cart2.jpeg"
                     layout="fill"
+                    objectFit="cover"
                     alt="Empty Cart"
                     loading="eager"
                     className=" bg-transparent"
                   />
                 </div>
-                <h3 className='font-semibold text-2xl'>Your cart is empty</h3>
+                <h3 className="font-semibold text-2xl">Your cart is empty</h3>
                 <p className="text-muted-foreground text-2xl ">
                   Whoops! Nothing to show here yet.
                 </p>
               </div>
             ) : null}
+            <ul
+              className={cn({
+                " divide-y divide-gray-200 border-b border-t border-gray-200":
+                  isMounted && items.length > 0,
+              })}
+            >
+              {isMounted &&
+                items.map(({ product }) => {
+                  const label = PRODUCT_CATEGORIES.find(
+                    (c) => c.value == product.category
+                  )?.label;
+                  const { image } = product.images[0];
+                  return (
+                    <li key={product.id} className=" flex py-6 sm:py-10">
+                      <div className="flex-shrink-0">
+                        <div className="relative h-24 w-24">
+                          {typeof image !== "string" && image.url ? (
+                            <Image
+                              fill
+                              src={image.url}
+                              alt="Product Image"
+                              className="h-full w-full rounded-md object-cover object-center sm:h-48 sm:w-48"
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+            </ul>
           </div>
         </div>
       </div>
