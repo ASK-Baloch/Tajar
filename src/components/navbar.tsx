@@ -22,7 +22,12 @@ const Navbar = async () => {
               {/* TODO: MOBILE NAV */}
               <div className="flex ml-4 lg:ml-0">
                 <Link href="/">
-                  <Image src="/tajar.png" alt="logo" height={90} width={120} />
+                  <Image
+                    src="/tajar-pics/tajar.png"
+                    alt="logo"
+                    height={90}
+                    width={120}
+                  />
                 </Link>
               </div>
               <div className="hidden z-50 lg:ml-6 lg:block lg:self-stretch">
