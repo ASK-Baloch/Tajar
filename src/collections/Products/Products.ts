@@ -1,13 +1,45 @@
 import { PRODUCT_CATEGORIES } from "../../config";
 import { CollectionConfig } from "payload/types";
 import { slateEditor } from "@payloadcms/richtext-slate";
+import { BeforeChangeHook } from "payload/dist/globals/config/types";
+import { Product, User } from "../../payload-types";
+import { stripe } from "../../lib/stripe";
+
+const addUser: BeforeChangeHook<Product> = ({ req, data }: { req: any, data: Product }) => {
+  const user = req.user
+  return { ...data, user: user?.id }
+}
+
 
 export const Products: CollectionConfig = {
   slug: "products",
   admin: {
     useAsTitle: "name",
   },
-  access: {},
+  access: {}, 
+  hooks: {
+    beforeChange: [addUser, async (args) => {
+      if (args.operation === "create") {
+        const data = args.data as Product
+        const createProduct = await stripe.products.create({
+          name: data.name,
+          default_price_data: {
+            currency: "PKR",
+            //unit_amount: Math.round(data.price * 100),
+          }
+        })
+        const updated: Product ={
+          ...data,
+          stripeId:createProduct.id,
+          priceId:createProduct.default_price as string
+        }
+        return updated
+      } else if (args.operation === "update") {
+        const data = args.data as Product
+        const updatedProduct = await stripe.products
+      }
+    }],
+  },
   fields: [
     {
       name: "user",
