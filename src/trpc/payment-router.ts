@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { privateProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
-import { getPayloadClient } from "@/get-playload";
+import { getPayloadClient } from "../get-playload";
 
 export const paymentRouter = router({
   createSession: privateProcedure
