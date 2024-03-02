@@ -28,7 +28,7 @@ export const paymentRouter = router({
         collection: "orders",
         data: {
           _isPaid: false,
-          products: filteredProducts,
+          products: filteredProducts.map((prod) => prod.id),
           user: user.id,
         }
       })
@@ -36,14 +36,12 @@ export const paymentRouter = router({
       filteredProducts.forEach((product) => {
         line_items.push({
           price: product.priceId!,
-          adjustable_quantity: {
-            enabled: true,
-            minimum: 1,
-          }
+          quantity: 1,        
         })
       })
       line_items.push({
         price: "price_1Op6guLzxmRDSZW6gdat5puJ",
+        quantity: 1,
         adjustable_quantity: {
           enabled: true,
           minimum: 1,
@@ -54,7 +52,7 @@ export const paymentRouter = router({
         const stripeSession = await stripe.checkout.sessions.create({
           success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
           cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
-          payment_method_types: ["card", "paypal"],
+          payment_method_types: ["card"],
           mode: "payment",
           metadata: {
             userId: user.id,
