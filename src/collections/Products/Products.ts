@@ -1,14 +1,15 @@
 import { PRODUCT_CATEGORIES } from "../../config";
-import { CollectionConfig } from "payload/types";
+import { CollectionBeforeChangeHook, CollectionConfig } from "payload/types";
 import { slateEditor } from "@payloadcms/richtext-slate";
-import { BeforeChangeHook } from "payload/dist/globals/config/types";
-import { Product, User } from "../../payload-types";
 import { stripe } from "../../lib/stripe";
+import { Product } from "../../payload-types";
 
-const addUser: BeforeChangeHook<Product> = ({ req, data }: { req: any, data: Product }) => {
-  const user = req.user
-  return { ...data, user: user?.id }
-}
+
+const addUser: CollectionBeforeChangeHook = ({ req, data }) => {
+  const user = req.user ;
+  return { ...data, user: user?.id };
+};
+
 
 
 export const Products: CollectionConfig = {
@@ -36,7 +37,16 @@ export const Products: CollectionConfig = {
         return updated
       } else if (args.operation === "update") {
         const data = args.data as Product
-        const updatedProduct = await stripe.products
+        const updatedProduct = await stripe.products.update(data.stripeId!, {
+          name: data.name,
+          default_price: data.priceId!,
+        })
+        const updated: Product ={
+          ...data,
+          stripeId:updatedProduct.id,
+          priceId:updatedProduct.default_price as string
+        }
+        return updated
       }
     }],
   },

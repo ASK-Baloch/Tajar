@@ -12,9 +12,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
+  const router = useRouter();
   const { items, removeItem } = useCart();
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
+  const { mutate: createCheckoutSession, isLoading } =
+    trpc.payment.createSession.useMutation({
+      onSuccess: ({ url }) => {
+        if (url) router.push(url);
+      },
+    });
   const productIds = items.map(({ product }) => product.id);
 
   useEffect(() => {
@@ -51,7 +58,7 @@ const Page = () => {
                   className="relative mb-4 h-40 w-40 text-muted-foreground"
                 >
                   <Image
-                    src="/hippo-empty-cart.png"
+                    src="/tajar-pics/empty-cart2.jpeg"
                     fill
                     loading="eager"
                     alt="empty shopping cart hippo"
@@ -186,7 +193,13 @@ const Page = () => {
             </div>
 
             <div className="mt-6">
-              <Button className="w-full" size="lg">
+              <Button
+                onClick={() => createCheckoutSession({ productIds })}
+                className="w-full"
+                size="lg"
+                disabled={items.length === 0 || isLoading}
+              >
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : null }
                 Checkout
               </Button>
             </div>

@@ -62,9 +62,11 @@ export const paymentRouter = router({
           },
           line_items,
         })
-
+        return {url:stripeSession.url}
       } catch (e) {
         console.log(e)
+        return {url:null}
       }
+
     }),
 });
