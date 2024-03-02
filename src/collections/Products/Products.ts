@@ -26,7 +26,7 @@ export const Products: CollectionConfig = {
           name: data.name,
           default_price_data: {
             currency: "PKR",
-            //unit_amount: Math.round(data.price * 100),
+            unit_amount: Math.round(data.price * 100),
           }
         })
         const updated: Product ={
