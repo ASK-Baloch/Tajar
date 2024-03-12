@@ -36,7 +36,7 @@ export const paymentRouter = router({
       filteredProducts.forEach((product) => {
         line_items.push({
           price: product.priceId!,
-          quantity: 1,        
+          quantity: 1,
         })
       })
       line_items.push({
@@ -60,11 +60,27 @@ export const paymentRouter = router({
           },
           line_items,
         })
-        return {url:stripeSession.url}
+        return { url: stripeSession.url }
       } catch (e) {
         console.log(e)
-        return {url:null}
+        return { url: null }
       }
 
     }),
+  pollOrderStatus: privateProcedure.input(z.object({ orderId: z.string() })).query(async ({ input, ctx }) => {
+    const { orderId } = input;
+    const payload = await getPayloadClient();
+
+    const { docs: orders } = await payload.find({
+      collection: "orders",
+      where: {
+        id: { equals: orderId },
+      },
+    })
+    if (!orders.length) {
+      throw new TRPCError({ code: "NOT_FOUND" })
+    }
+    const [order] = orders
+    return { isPaid: order._isPaid }
+  }),
 });
