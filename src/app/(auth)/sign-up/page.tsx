@@ -18,7 +18,7 @@ import { ZodError } from "zod";
 import { router } from "@/trpc/trpc";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const {
     register,
     handleSubmit,
@@ -116,4 +116,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

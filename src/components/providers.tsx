@@ -6,7 +6,7 @@ import { trpc } from "@/trpc/client";
 import { httpBatchLink } from "@trpc/client";
 
 
-const providers = ({children}: PropsWithChildren) => {
+const Providers = ({children}: PropsWithChildren) => {
     const [queryClient] = useState(() => new QueryClient())
     const [trpcClient] = useState(() => trpc.createClient({
         links:[
@@ -30,4 +30,4 @@ const providers = ({children}: PropsWithChildren) => {
     )
 }
 
-export default providers
+export default Providers

@@ -14,11 +14,11 @@ import {
 } from "@/lib/validators/account-credentials-validator";
 import { trpc } from "@/trpc/client";
 import { toast } from "sonner";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation'
 
-const page = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+const Page = () => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const isSeller = searchParams.get("as") === "seller";
   const origin = searchParams.get("origin");
 
@@ -166,4 +166,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
