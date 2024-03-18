@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 import tajaricon from "@/app/tajar_icon.ico"
 import Providers from "@/components/providers";
 import { Toaster } from "sonner";
