@@ -39,6 +39,10 @@ const start = async () => {
       },
     },
   });
+
+  const cartRouter = express.Router();
+  cartRouter.use(payload.authenticate);
+
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
       payload.logger.info("Nextjs is building for production")
