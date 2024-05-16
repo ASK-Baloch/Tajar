@@ -3,21 +3,37 @@ import { CollectionBeforeChangeHook, CollectionConfig } from "payload/types";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import { stripe } from "../../lib/stripe";
 import { Product } from "../../payload-types";
+import { AfterChangeHook } from "payload/dist/collections/config/types";
 
 
 const addUser: CollectionBeforeChangeHook = ({ req, data }) => {
-  const user = req.user ;
+  const user = req.user;
   return { ...data, user: user?.id };
 };
 
+const syncUser: AfterChangeHook<Product> = async ({ req, doc }) => {
+  const fullUser = await req.payload.findByID({
+    collection: "users",
+    id: req.user.id
+  })
+  if (fullUser && typeof fullUser === "object") {
+    const { products } = fullUser
 
+    const allIDs = [
+      ...(products?.map((product) => typeof product === "object" ? product.id : product) || []),
+    ]
 
+    const createdProductIDs = allIDs.filter((id, index) => allIDs.indexOf(id) === index)
+  }
+}
+
+ 
 export const Products: CollectionConfig = {
   slug: "products",
   admin: {
     useAsTitle: "name",
   },
-  access: {}, 
+  access: {},
   hooks: {
     beforeChange: [addUser, async (args) => {
       if (args.operation === "create") {
@@ -29,10 +45,10 @@ export const Products: CollectionConfig = {
             unit_amount: Math.round(data.price * 100),
           }
         })
-        const updated: Product ={
+        const updated: Product = {
           ...data,
-          stripeId:createProduct.id,
-          priceId:createProduct.default_price as string
+          stripeId: createProduct.id,
+          priceId: createProduct.default_price as string
         }
         return updated
       } else if (args.operation === "update") {
@@ -41,10 +57,10 @@ export const Products: CollectionConfig = {
           name: data.name,
           default_price: data.priceId!,
         })
-        const updated: Product ={
+        const updated: Product = {
           ...data,
-          stripeId:updatedProduct.id,
-          priceId:updatedProduct.default_price as string
+          stripeId: updatedProduct.id,
+          priceId: updatedProduct.default_price as string
         }
         return updated
       }
