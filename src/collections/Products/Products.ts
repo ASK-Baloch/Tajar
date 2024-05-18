@@ -1,8 +1,8 @@
 import { PRODUCT_CATEGORIES } from "../../config";
-import { CollectionBeforeChangeHook, CollectionConfig } from "payload/types";
+import { Access, CollectionBeforeChangeHook, CollectionConfig } from "payload/types";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import { stripe } from "../../lib/stripe";
-import { Product } from "../../payload-types";
+import { Product, User } from "../../payload-types";
 import { AfterChangeHook } from "payload/dist/collections/config/types";
 
 
@@ -24,17 +24,53 @@ const syncUser: AfterChangeHook<Product> = async ({ req, doc }) => {
     ]
 
     const createdProductIDs = allIDs.filter((id, index) => allIDs.indexOf(id) === index)
+
+    const dataToUpdate = [...createdProductIDs, doc.id]
+
+    await req.payload.update({
+      collection: "users",
+      id: fullUser.id,
+      data: {
+        products: dataToUpdate
+      }
+    })
   }
 }
 
- 
+const isAdminorHasAccess = (): Access => ({ req: { user: _user } }) => {
+  const user = _user as User | undefined
+
+  if (!user) return false
+  if (user.role === "admin") return true
+
+  const userProductIDs = (user.products || []).reduce<Array<string>>((acc, product) => {
+    if (!product) return acc
+    if (typeof product === 'string') {
+      acc.push(product)
+    } else{
+      acc.push(product.id)
+    }
+
+    return acc
+  }, [])
+
+  return {
+    id:{
+      in: userProductIDs
+    }
+  }
+}
+
 export const Products: CollectionConfig = {
   slug: "products",
   admin: {
     useAsTitle: "name",
   },
-  access: {},
+  access: {
+    read: isAdminorHasAccess()
+  },
   hooks: {
+    afterChange: [syncUser],
     beforeChange: [addUser, async (args) => {
       if (args.operation === "create") {
         const data = args.data as Product
