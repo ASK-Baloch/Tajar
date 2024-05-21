@@ -49,7 +49,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
       <div className="hidden md:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
         <Image
           fill
-          src="/tajar-pics\checkout-thank-you.jpg"
+          src="/checkout-thank-you.jpg"
           alt="thank you for your order"
           className=" h-full w-full object-cover object-center"
         />

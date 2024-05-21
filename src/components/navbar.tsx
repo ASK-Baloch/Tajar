@@ -24,7 +24,7 @@ const Navbar = async () => {
               <div className="flex ml-4 lg:ml-0">
                 <Link href="/">
                   <Image
-                    src="/tajar-pics/tajar.png"
+                    src="/tajar.png"
                     alt="logo"
                     height={90}
                     width={120}
