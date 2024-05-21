@@ -1,7 +1,6 @@
 import "./globals.css";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn, constructMetadata } from "@/lib/utils";
 import Navbar from "@/components/navbar";
 import tajaricon from "@/app/tajar_icon.ico"
 import Providers from "@/components/providers";
@@ -10,20 +9,7 @@ import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Tajar",
-  description: "Developed by Ahmed Baloch",
-  // icons: tajaricon,
-  //   openGraph: {
-  //     images: [
-  //       {
-  //         url: '/tajar_icon.ico',
-  //         width: 1200,
-  //         height: 630,
-  //       },
-  //     ],
-  // }
-};
+export const metadata = constructMetadata()
 
 export default function RootLayout({
   children,
