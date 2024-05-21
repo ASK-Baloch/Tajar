@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getServersideUser } from "@/lib/payload-utils";
 import { cookies } from "next/headers";
 import UserAccountNav from "./UserAccountNav";
+import MobileNav from "./MobileNav";
 
 const Navbar = async () => {
   const nextCookies = cookies();
@@ -19,7 +20,7 @@ const Navbar = async () => {
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
             <div className="flex h-16">
-              {/* TODO: MOBILE NAV */}
+            <MobileNav />
               <div className="flex ml-4 lg:ml-0">
                 <Link href="/">
                   <Image
