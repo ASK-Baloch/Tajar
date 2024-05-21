@@ -3,7 +3,7 @@ const nextConfig = {
     images:{
         domains:[
             "localhost",
-            "simple-project-production.up.railway.app/"
+            "Tajar-production.up.railway.app/"
         ]
     }
 }
