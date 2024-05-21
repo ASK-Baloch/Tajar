@@ -4,7 +4,7 @@ import { cn, constructMetadata } from "@/lib/utils";
 import Navbar from "@/components/navbar";
 import Providers from "@/components/providers";
 import { Toaster } from "sonner";
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
