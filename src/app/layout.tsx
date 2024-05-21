@@ -2,10 +2,9 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn, constructMetadata } from "@/lib/utils";
 import Navbar from "@/components/navbar";
-import tajaricon from "@/app/tajar_icon.ico"
 import Providers from "@/components/providers";
 import { Toaster } from "sonner";
-import Footer from "../components/Footer";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
